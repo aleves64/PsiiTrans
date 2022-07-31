@@ -24,6 +24,7 @@ namespace PsiiTrans
             ShowInTaskbar = false;
             TopMost = true;
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
+            StartPosition = FormStartPosition.Manual;
         }
 
         public void SetResults(List<LookupResult> res)
