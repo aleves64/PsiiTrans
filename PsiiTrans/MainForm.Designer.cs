@@ -30,7 +30,7 @@
         {
             this.outputTextbox = new System.Windows.Forms.TextBox();
             this.selectProcessButton = new System.Windows.Forms.Button();
-            this.selectedProcessLabel = new System.Windows.Forms.Label();
+            this.selectedExeLabel = new System.Windows.Forms.Label();
             this.connectButton = new System.Windows.Forms.Button();
             this.ttCombo = new System.Windows.Forms.ComboBox();
             this.connectedLabel = new System.Windows.Forms.Label();
@@ -60,15 +60,15 @@
             this.selectProcessButton.UseVisualStyleBackColor = true;
             this.selectProcessButton.Click += new System.EventHandler(this.selectProcessButton_Click);
             // 
-            // selectedProcessLabel
+            // selectedExeLabel
             // 
-            this.selectedProcessLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.selectedProcessLabel.AutoSize = true;
-            this.selectedProcessLabel.Location = new System.Drawing.Point(198, 391);
-            this.selectedProcessLabel.Name = "selectedProcessLabel";
-            this.selectedProcessLabel.Size = new System.Drawing.Size(85, 13);
-            this.selectedProcessLabel.TabIndex = 2;
-            this.selectedProcessLabel.Text = "nothing selected";
+            this.selectedExeLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.selectedExeLabel.AutoSize = true;
+            this.selectedExeLabel.Location = new System.Drawing.Point(198, 391);
+            this.selectedExeLabel.Name = "selectedExeLabel";
+            this.selectedExeLabel.Size = new System.Drawing.Size(85, 13);
+            this.selectedExeLabel.TabIndex = 2;
+            this.selectedExeLabel.Text = "nothing selected";
             // 
             // connectButton
             // 
@@ -106,7 +106,7 @@
             this.Controls.Add(this.connectedLabel);
             this.Controls.Add(this.ttCombo);
             this.Controls.Add(this.connectButton);
-            this.Controls.Add(this.selectedProcessLabel);
+            this.Controls.Add(this.selectedExeLabel);
             this.Controls.Add(this.selectProcessButton);
             this.Controls.Add(this.outputTextbox);
             this.Name = "MainForm";
@@ -122,7 +122,7 @@
 
         private System.Windows.Forms.TextBox outputTextbox;
         private System.Windows.Forms.Button selectProcessButton;
-        private System.Windows.Forms.Label selectedProcessLabel;
+        private System.Windows.Forms.Label selectedExeLabel;
         private System.Windows.Forms.Button connectButton;
         private System.Windows.Forms.ComboBox ttCombo;
         private System.Windows.Forms.Label connectedLabel;

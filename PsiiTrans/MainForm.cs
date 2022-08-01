@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
+using System.IO;
 using JMdict;
 
 namespace PsiiTrans
@@ -17,8 +19,7 @@ namespace PsiiTrans
         private const int MAX_TEXT_LENGTH = 200;
 
         private bool isSelectWindow = false;
-        private bool connected = false;
-        private uint selectedPid;
+        private string selectedExe;
         private int lastTextIndex = -1;
 
         private Dictionary<long, string> handleToStringDict = new Dictionary<long, string>(); // Stores string output from each text thread
@@ -89,16 +90,16 @@ namespace PsiiTrans
             }
         }
 
-        private void SetSelectedPidLabel(string text)
+        private void SetSelectedExeLabel(string text)
         {
-            if (selectedProcessLabel.InvokeRequired)
+            if (selectedExeLabel.InvokeRequired)
             {
-                SetTextCallback d = new SetTextCallback(SetSelectedPidLabel);
+                SetTextCallback d = new SetTextCallback(SetSelectedExeLabel);
                 this.Invoke(d, new object[] { text });
             }
             else
             {
-                selectedProcessLabel.Text = text;
+                selectedExeLabel.Text = text;
             }
         }
         public bool output(OutputInfo outinfo, string message)
@@ -150,7 +151,6 @@ namespace PsiiTrans
             }
             else
             {
-                connected = true;
                 connectedLabel.Text = "connected";
             }
         }
@@ -217,8 +217,10 @@ namespace PsiiTrans
                     {
                         uint pid;
                         Winapi.GetWindowThreadProcessId(newWindow, out pid);
-                        selectedPid = pid;
-                        SetSelectedPidLabel(pid.ToString());
+                        Process process = Process.GetProcessById((int)pid);
+                        selectedExe = process.MainModule.FileName;
+                        process.Dispose();
+                        SetSelectedExeLabel(selectedExe);
                     }
                 });
             }
@@ -236,7 +238,14 @@ namespace PsiiTrans
 
         private void connectButton_Click(object sender, EventArgs e)
         {
-            TextInterop.InjectProcess(selectedPid);
+            string filename = Path.GetFileNameWithoutExtension(selectedExe);
+            Process[] processes = Process.GetProcessesByName(filename);
+            foreach (Process process in processes)
+            {
+                uint pid = (uint)process.Id;
+                TextInterop.InjectProcess(pid);
+                process.Dispose();
+            }
         }
     }
 }
