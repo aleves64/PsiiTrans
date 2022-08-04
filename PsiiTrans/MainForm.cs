@@ -120,7 +120,6 @@ namespace PsiiTrans
                 {
                     AppendText(message + System.Environment.NewLine);
                 }
-                Console.Error.WriteLine("[{0:X}:{1:X}:{2:X}:{3:X}:{4:X}:{5}] {6}", outinfo.handle, outinfo.processId, outinfo.addr, outinfo.ctx, outinfo.ctx2, outinfo.name, message);
                 return false;
             }
         }
