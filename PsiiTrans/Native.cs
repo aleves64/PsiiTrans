@@ -397,5 +397,6 @@ namespace PsiiTrans
         public const int ABS_AUTOHIDE = 0x1;
 
         public const int WS_EX_TOOLWINDOW = 0x00000080;
+        public const int WS_EX_TOPMOST = 0x00000008;
     }
 }

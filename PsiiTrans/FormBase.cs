@@ -17,6 +17,7 @@ namespace PsiiTrans
             {
                 CreateParams Params = base.CreateParams;
                 Params.ExStyle |= NativeConstants.WS_EX_TOOLWINDOW;
+                Params.ExStyle |= NativeConstants.WS_EX_TOPMOST;
                 return Params;
             }
         }

@@ -22,7 +22,6 @@ namespace PsiiTrans
             InitializeComponent();
 
             ShowInTaskbar = false;
-            TopMost = true;
             FormBorderStyle = FormBorderStyle.FixedToolWindow;
             StartPosition = FormStartPosition.Manual;
         }
