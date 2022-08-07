@@ -42,6 +42,7 @@ namespace PsiiTrans
             outputTextbox.ReadOnly = true;
             outputTextbox.BackColor = SystemColors.Window;
             outputTextbox.MouseMove += WordUnderCursor;
+            outputTextbox.MouseLeave += OnTextBoxMouseLeave;
 
             // Other event handlers
             base.Deactivate += PidFromSelectedWindow;
@@ -191,6 +192,12 @@ namespace PsiiTrans
                 resultPopup.Visible = false;
             }
         }
+
+        private void OnTextBoxMouseLeave(Object sender, EventArgs e)
+        {
+            resultPopup.Visible = false;
+        }
+
 
         private void OnComboSelectionChanged(Object sender, EventArgs e)
         {
