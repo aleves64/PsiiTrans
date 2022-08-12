@@ -24,6 +24,7 @@ namespace PsiiTrans
 
         private Dictionary<long, string> handleToStringDict = new Dictionary<long, string>(); // Stores string output from each text thread
         private Dictionary<int, long> indexToHandleDict = new Dictionary<int, long>(); // Associates each combo box index with a text thread handle
+        private Dictionary<long, int> repeatsFix = new Dictionary<long, int>();
 
         private OutputCallback Output;
         private ProcessEventHandler Connect;
@@ -113,6 +114,12 @@ namespace PsiiTrans
             }
             else
             {
+                int repeats;
+                if (repeatsFix.TryGetValue(outinfo.handle, out repeats))
+                {
+                    message = removeStringRepeats(message, repeats);
+                }
+
                 string txt = handleToStringDict[outinfo.handle];
                 txt += message + System.Environment.NewLine;
                 handleToStringDict[outinfo.handle] = txt;
@@ -203,11 +210,25 @@ namespace PsiiTrans
         {
             ComboBox comboBox = (ComboBox)sender;
             int selectedIndex = comboBox.SelectedIndex;
-            if (indexToHandleDict.ContainsKey(selectedIndex))
+            long handle;
+            if (indexToHandleDict.TryGetValue(selectedIndex, out handle))
             {
-                string txt = handleToStringDict[indexToHandleDict[selectedIndex]];
+                string txt = handleToStringDict[handle];
                 SetText(txt);
                 lastTextIndex = -1;
+
+                int repeats;
+                if (repeatsFix.TryGetValue(handle, out repeats))
+                {
+                    suppressCheckChange = !repeatsCheckBox.Checked;
+                    repeatsCheckBox.Checked = true;
+                    repeatsCheckBox.Text = String.Format("Fixing {0} repeats", repeats);
+                } else
+                {
+                    suppressCheckChange = repeatsCheckBox.Checked;
+                    repeatsCheckBox.Checked = false;
+                    repeatsCheckBox.Text = "Fix repeating characters";
+                }
             }
         }
 
@@ -252,6 +273,73 @@ namespace PsiiTrans
                 TextInterop.InjectProcess(pid);
                 process.Dispose();
             }
+        }
+
+        private bool suppressCheckChange = false;
+        private void repeatsCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (suppressCheckChange)
+            {
+                suppressCheckChange = false;
+                return;
+            }
+
+            int selectedIndex = ttCombo.SelectedIndex;
+            long handle = indexToHandleDict[selectedIndex];
+            if (repeatsCheckBox.Checked)
+            {
+                string text = handleToStringDict[handle];
+                int repeats = getRepeatCount(text);
+                repeatsFix.Add(handle, repeats);
+                repeatsCheckBox.Text = String.Format("Fixing {0} repeats", repeats);
+
+                text = removeStringRepeats(text, repeats);
+                handleToStringDict[handle] = text;
+                SetText(text);
+            }
+            else
+            {
+                repeatsFix.Remove(handle);
+            }
+        }
+        private int getRepeatCount(string text)
+        {
+            int i = text.Length - 3; // Go back by two to ignore the \r\n line separator
+            int minRepeats = text.Length - 2;
+            char c = text[i];
+            while (i > 0 && c != '\n')
+            {
+                int repeats = 1;
+                while (text[--i] == c)
+                {
+                    ++repeats;
+                    if (i == 0) break;
+                }
+                if (repeats < minRepeats)
+                {
+                    minRepeats = repeats;
+                }
+                c = text[i];
+            }
+            return minRepeats;
+        }
+        private string removeStringRepeats(string text, int repeats)
+        {
+            StringBuilder builder = new StringBuilder(text.Length);
+            int i = 0;
+            while (i < text.Length)
+            {
+                builder.Append(text[i]);
+                if (text[i] == '\r' || text[i] == '\n')
+                {
+                    i += 1;
+                }
+                else
+                {
+                    i += repeats;
+                }
+            }
+            return builder.ToString();
         }
     }
 }

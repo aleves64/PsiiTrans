@@ -34,6 +34,7 @@
             this.connectButton = new System.Windows.Forms.Button();
             this.ttCombo = new System.Windows.Forms.ComboBox();
             this.connectedLabel = new System.Windows.Forms.Label();
+            this.repeatsCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // outputTextbox
@@ -98,11 +99,23 @@
             this.connectedLabel.TabIndex = 5;
             this.connectedLabel.Text = "not connected";
             // 
+            // repeatsCheckBox
+            // 
+            this.repeatsCheckBox.AutoSize = true;
+            this.repeatsCheckBox.Location = new System.Drawing.Point(601, 420);
+            this.repeatsCheckBox.Name = "repeatsCheckBox";
+            this.repeatsCheckBox.Size = new System.Drawing.Size(139, 17);
+            this.repeatsCheckBox.TabIndex = 6;
+            this.repeatsCheckBox.Text = "Fix repeating characters";
+            this.repeatsCheckBox.UseVisualStyleBackColor = true;
+            this.repeatsCheckBox.CheckedChanged += new System.EventHandler(this.repeatsCheckBox_CheckedChanged);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.repeatsCheckBox);
             this.Controls.Add(this.connectedLabel);
             this.Controls.Add(this.ttCombo);
             this.Controls.Add(this.connectButton);
@@ -126,6 +139,7 @@
         private System.Windows.Forms.Button connectButton;
         private System.Windows.Forms.ComboBox ttCombo;
         private System.Windows.Forms.Label connectedLabel;
+        private System.Windows.Forms.CheckBox repeatsCheckBox;
     }
 }
 
